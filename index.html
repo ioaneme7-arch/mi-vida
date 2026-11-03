@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#10131a">
+<title>Mi Vida — Panel personal</title>
+<style>
+:root{--bg:#0b0e14;--panel:#141923;--panel2:#1a202c;--text:#f3f5f8;--muted:#9aa4b4;--line:#2a3240;--accent:#8b9cff;--green:#62d6a5;--red:#ff7b87;--yellow:#f5c86a}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top left,#182034 0%,var(--bg) 45%);color:var(--text);font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;min-height:100vh}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;touch-action:manipulation}
+.app{max-width:1120px;margin:auto;padding:20px 18px 100px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}.brand{display:flex;gap:12px;align-items:center}.logo{width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,#8b9cff,#6b79d9);display:grid;place-items:center;font-weight:900;color:#10131a;font-size:20px}.brand h1{font-size:21px;margin:0}.brand p{margin:2px 0 0;color:var(--muted);font-size:12px}.date-pill{border:1px solid var(--line);border-radius:999px;padding:8px 11px;color:var(--muted);font-size:12px}
+.hero{background:linear-gradient(135deg,#202b43,#171c29 68%);border:1px solid #303b50;border-radius:24px;padding:22px;margin-bottom:18px;position:relative;overflow:hidden}.hero:after{content:"";position:absolute;width:170px;height:170px;border-radius:50%;right:-55px;top:-60px;background:#8b9cff16}.eyebrow{color:var(--accent);font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase}.hero h2{font-size:27px;line-height:1.15;margin:8px 0 7px;max-width:600px}.hero p{color:var(--muted);margin:0;max-width:580px}.hero-row{display:flex;align-items:flex-end;justify-content:space-between;gap:16px}.hero button{background:var(--accent);color:#10131a;border-radius:12px;padding:11px 14px;font-weight:800;white-space:nowrap}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:18px}.stat{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:15px}.stat .label{color:var(--muted);font-size:12px}.stat .value{font-size:23px;font-weight:800;margin:5px 0 2px;letter-spacing:-.5px}.stat .note{font-size:11px;color:var(--muted)}
+.tabs{display:flex;gap:7px;overflow:auto;padding:4px 1px 13px;margin-bottom:8px;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab{flex:0 0 auto;padding:10px 13px;border-radius:12px;background:var(--panel);border:1px solid var(--line);color:var(--muted);font-weight:700}.tab.active{background:var(--accent);color:#111522;border-color:var(--accent)}
+.section{display:none}.section.active{display:block}.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:12px 0 14px}.section-head h2{margin:0;font-size:20px}.section-head p{margin:3px 0 0;color:var(--muted);font-size:12px}
+.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:14px}.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:17px;min-width:0}.card h3{font-size:15px;margin:0 0 13px}.card-sub{font-size:12px;color:var(--muted);margin:-8px 0 12px}
+.quick-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.quick{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:13px;text-align:left;color:var(--text);min-height:84px}.quick strong{display:block;font-size:13px;margin-top:8px}.quick span{font-size:19px}
+.list{display:flex;flex-direction:column;gap:8px}.item{display:flex;align-items:center;gap:10px;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:11px}.item-main{flex:1;min-width:0}.item-title{font-weight:700;overflow-wrap:anywhere}.item-meta{font-size:11px;color:var(--muted);margin-top:2px}.item-amount{font-weight:800;white-space:nowrap}.item-amount.positive{color:var(--green)}.item-amount.negative{color:var(--red)}
+.form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.field{display:flex;flex-direction:column;gap:5px}.field.full{grid-column:1/-1}.field label{font-size:11px;color:var(--muted);font-weight:700}.field input,.field select,.field textarea{width:100%;background:#0e121a;color:var(--text);border:1px solid var(--line);border-radius:11px;padding:11px;min-width:0;outline:none}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent)}.primary{background:var(--accent);color:#10131a;padding:11px 14px;border-radius:11px;font-weight:800}.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--line);padding:10px 12px;border-radius:11px;font-weight:700}.danger{background:#3a2028;color:#ff9aa4;border:1px solid #5b303b;padding:8px 10px;border-radius:9px;font-weight:700}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.empty{color:var(--muted);font-size:13px;padding:12px;text-align:center;border:1px dashed var(--line);border-radius:12px}
+.progress{height:8px;background:#28303d;border-radius:99px;overflow:hidden;margin:8px 0}.progress span{display:block;height:100%;background:var(--green);border-radius:99px}
+.checkline{display:flex;align-items:center;gap:10px}.checkline input{width:19px;height:19px;accent-color:var(--green)}
+.small{font-size:11px;color:var(--muted)}.footer{margin-top:24px;text-align:center;color:var(--muted);font-size:11px}
+.mobile-nav{display:none}
+@media(max-width:760px){.app{padding:14px 13px 100px}.hero{padding:18px}.hero h2{font-size:23px}.hero-row{align-items:flex-start;flex-direction:column}.stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.stat{padding:13px}.stat .value{font-size:21px}.grid{grid-template-columns:1fr}.quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.date-pill{display:none}.tabs{position:sticky;top:0;z-index:5;background:#0b0e14;padding-top:8px}.section-head{align-items:flex-start}.form{grid-template-columns:1fr}.field.full{grid-column:auto}.mobile-nav{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:10;padding:9px 8px calc(9px + env(safe-area-inset-bottom));background:#10141df2;border-top:1px solid var(--line);gap:4px;justify-content:space-around;backdrop-filter:blur(15px)}.mobile-nav button{background:transparent;color:var(--muted);padding:7px 5px;border-radius:10px;font-size:10px;display:flex;flex-direction:column;align-items:center;gap:3px;flex:1}.mobile-nav button.active{color:var(--accent);background:#8b9cff15}.mobile-nav b{font-size:17px}.app{padding-bottom:105px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+ <div class="brand"><div class="logo">MV</div><div><h1>Mi Vida</h1><p>Tu panel personal</p></div></div>
+ <div class="date-pill" id="today"></div>
+</header>
+<section class="hero">
+ <div class="hero-row"><div><div class="eyebrow">Panel de control</div><h2>Organiza tu día.<br>Avanza a tu ritmo.</h2><p>Un espacio para llevar tus estudios, dinero, coche y objetivos en orden.</p></div><button onclick="switchTab('agenda')">Planificar día ↗</button></div>
+</section>
+<div class="stats">
+ <div class="stat"><div class="label">Balance del mes</div><div class="value" id="balance">0 €</div><div class="note">Ingresos menos gastos registrados</div></div>
+ <div class="stat"><div class="label">Tareas pendientes</div><div class="value" id="pending">0</div><div class="note">En tu lista de estudio y agenda</div></div>
+ <div class="stat"><div class="label">Hábitos de hoy</div><div class="value" id="habitsCount">0/0</div><div class="note">Completados hoy</div></div>
+ <div class="stat"><div class="label">Gastos del mes</div><div class="value" id="spending">0 €</div><div class="note">Movimientos tipo gasto</div></div>
+</div>
+<div class="tabs" id="tabs">
+ <button class="tab active" data-tab="inicio" onclick="switchTab('inicio')">⌂ Inicio</button>
+ <button class="tab" data-tab="dinero" onclick="switchTab('dinero')">€ Dinero</button>
+ <button class="tab" data-tab="estudio" onclick="switchTab('estudio')">▣ Estudios</button>
+ <button class="tab" data-tab="coche" onclick="switchTab('coche')">▰ Coche</button>
+ <button class="tab" data-tab="fitness" onclick="switchTab('fitness')">＋ Hábitos</button>
+ <button class="tab" data-tab="agenda" onclick="switchTab('agenda')">◷ Agenda</button>
+ <button class="tab" data-tab="estadisticas" onclick="switchTab('estadisticas')">↗ Estadísticas</button>
+</div>
+<section class="section active" id="inicio">
+ <div class="section-head"><div><h2>Resumen de hoy</h2><p>Accesos rápidos a tus áreas principales.</p></div></div>
+ <div class="grid">
+  <div class="card"><h3>Accesos rápidos</h3><div class="quick-grid">
+   <button class="quick" onclick="switchTab('dinero')"><span>💶</span><strong>Registrar gasto</strong></button>
+   <button class="quick" onclick="switchTab('estudio')"><span>📚</span><strong>Añadir tarea</strong></button>
+   <button class="quick" onclick="switchTab('coche')"><span>🚘</span><strong>Gasto del coche</strong></button>
+   <button class="quick" onclick="switchTab('fitness')"><span>🎯</span><strong>Marcar hábito</strong></button>
+   <button class="quick" onclick="switchTab('agenda')"><span>🗓️</span><strong>Planificar</strong></button>
+   <button class="quick" onclick="switchTab('estadisticas')"><span>📊</span><strong>Ver progreso</strong></button>
+  </div></div>
+  <div class="card"><h3>Próximas tareas</h3><div id="homeTasks" class="list"></div></div>
+ </div>
+ <div class="card" style="margin-top:14px"><h3>Hábitos diarios</h3><div id="homeHabits" class="list"></div></div>
+</section>
+<section class="section" id="dinero">
+ <div class="section-head"><div><h2>Dinero</h2><p>Registra ingresos y gastos. Los datos se guardan en este dispositivo.</p></div></div>
+ <div class="grid">
+  <div class="card"><h3>Nuevo movimiento</h3><form id="moneyForm" class="form">
+   <div class="field"><label>Tipo</label><select id="mType"><option value="gasto">Gasto</option><option value="ingreso">Ingreso</option></select></div>
+   <div class="field"><label>Importe (€)</label><input id="mAmount" type="number" min="0.01" step="0.01" placeholder="25.50" required></div>
+   <div class="field"><label>Categoría</label><select id="mCategory"><option>General</option><option>Coche / gasolina</option><option>Comida</option><option>Estudios</option><option>Ocio</option><option>Suscripciones</option><option>Trabajo / nómina</option><option>Ahorro</option></select></div>
+   <div class="field"><label>Fecha</label><input id="mDate" type="date" required></div>
+   <div class="field full"><label>Descripción</label><input id="mDesc" placeholder="Ej. gasolina, nómina, cena…" required></div>
+   <div class="field full"><button class="primary" type="submit">Guardar movimiento</button></div>
+  </form></div>
+  <div class="card"><h3>Movimientos recientes</h3><div id="moneyList" class="list"></div></div>
+ </div>
+</section>
+<section class="section" id="estudio">
+ <div class="section-head"><div><h2>Estudios</h2><p>Organiza módulos, entregas y exámenes.</p></div></div>
+ <div class="grid">
+  <div class="card"><h3>Añadir tarea de estudio</h3><form id="taskForm" class="form">
+   <div class="field full"><label>Tarea</label><input id="tTitle" placeholder="Ej. Practicar bucles en Java" required></div>
+   <div class="field"><label>Asignatura</label><select id="tSubject"><option>Programación</option><option>Sistemas Informáticos</option><option>Bases de Datos</option><option>Lenguajes de Marcas</option><option>Entornos de Desarrollo</option><option>Otra</option></select></div>
+   <div class="field"><label>Fecha límite</label><input id="tDate" type="date"></div>
+   <div class="field full"><button class="primary" type="submit">Añadir tarea</button></div>
+  </form></div>
+  <div class="card"><h3>Lista de estudio</h3><div id="taskList" class="list"></div></div>
+ </div>
+</section>
+<section class="section" id="coche">
+ <div class="section-head"><div><h2>Coche</h2><p>Control de repostajes, mantenimiento y costes.</p></div></div>
+ <div class="grid">
+  <div class="card"><h3>Registrar gasto del coche</h3><form id="carForm" class="form">
+   <div class="field"><label>Tipo de gasto</label><select id="cType"><option>Gasolina / diésel</option><option>Mantenimiento</option><option>Seguro</option><option>ITV</option><option>Neumáticos</option><option>Parking / peajes</option><option>Otro</option></select></div>
+   <div class="field"><label>Importe (€)</label><input id="cAmount" type="number" min="0.01" step="0.01" required placeholder="50"></div>
+   <div class="field"><label>Kilómetros (opcional)</label><input id="cKm" type="number" min="0" placeholder="147600"></div>
+   <div class="field"><label>Fecha</label><input id="cDate" type="date" required></div>
+   <div class="field full"><label>Detalle</label><input id="cDesc" placeholder="Ej. repostaje completo"></div>
+   <div class="field full"><button class="primary" type="submit">Guardar gasto</button></div>
+  </form></div>
+  <div class="card"><h3>Historial del coche</h3><div id="carList" class="list"></div></div>
+ </div>
+</section>
+<section class="section" id="fitness">
+ <div class="section-head"><div><h2>Hábitos</h2><p>Marca tus objetivos diarios para crear constancia.</p></div></div>
+ <div class="grid">
+  <div class="card"><h3>Crear hábito</h3><form id="habitForm" class="form">
+   <div class="field full"><label>Nombre del hábito</label><input id="hTitle" placeholder="Ej. Entrenar, estudiar 30 min…" required></div>
+   <div class="field full"><button class="primary" type="submit">Añadir hábito</button></div>
+  </form><p class="small">Marca el hábito cada día. El progreso diario se reinicia visualmente al cambiar la fecha.</p></div>
+  <div class="card"><h3>Hoy</h3><div id="habitList" class="list"></div></div>
+ </div>
+</section>
+<section class="section" id="agenda">
+ <div class="section-head"><div><h2>Agenda</h2><p>Una lista sencilla para organizar el día.</p></div></div>
+ <div class="grid">
+  <div class="card"><h3>Agregar evento o recordatorio</h3><form id="agendaForm" class="form">
+   <div class="field full"><label>Evento</label><input id="aTitle" placeholder="Ej. Ir al gimnasio" required></div>
+   <div class="field"><label>Fecha</label><input id="aDate" type="date" required></div>
+   <div class="field"><label>Hora (opcional)</label><input id="aTime" type="time"></div>
+   <div class="field full"><button class="primary" type="submit">Añadir a agenda</button></div>
+  </form></div>
+  <div class="card"><h3>Agenda pendiente</h3><div id="agendaList" class="list"></div></div>
+ </div>
+</section>
+<section class="section" id="estadisticas">
+ <div class="section-head"><div><h2>Estadísticas</h2><p>Vista general de tus registros.</p></div></div>
+ <div class="grid">
+  <div class="card"><h3>Resumen financiero</h3><div id="financeStats"></div></div>
+  <div class="card"><h3>Productividad</h3><div id="productivityStats"></div></div>
+ </div>
+ <div class="card" style="margin-top:14px"><h3>Datos y privacidad</h3><p class="small">Los datos se guardan localmente en el navegador de este dispositivo. No se envían a ningún servidor. Si borras los datos del navegador, puedes perderlos.</p><div class="actions"><button class="secondary" onclick="exportData()">Exportar copia JSON</button><button class="danger" onclick="resetData()">Borrar todos los datos</button></div></div>
+</section>
+<div class="footer">Mi Vida · Versión inicial · Datos guardados en tu dispositivo</div>
+</div>
+<nav class="mobile-nav">
+ <button class="active" data-tab="inicio" onclick="switchTab('inicio')"><b>⌂</b>Inicio</button>
+ <button data-tab="dinero" onclick="switchTab('dinero')"><b>€</b>Dinero</button>
+ <button data-tab="estudio" onclick="switchTab('estudio')"><b>▣</b>Estudio</button>
+ <button data-tab="fitness" onclick="switchTab('fitness')"><b>＋</b>Hábitos</button>
+ <button data-tab="agenda" onclick="switchTab('agenda')"><b>◷</b>Agenda</button>
+</nav>
+<script>
+(function(){
+'use strict';
+const KEY='miVidaData_v1';
+const $=id=>document.getElementById(id);
+const todayISO=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const money=n=>Number(n||0).toLocaleString('es-ES',{style:'currency',currency:'EUR'});
+const escapeHTML=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let data;
+function load(){try{data=JSON.parse(localStorage.getItem(KEY))||{transactions:[],tasks:[],cars:[],habits:[],agenda:[],habitChecks:{}}}catch(e){data={transactions:[],tasks:[],cars:[],habits:[],agenda:[],habitChecks:{}}}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){alert('No se pudo guardar. Comprueba el espacio disponible del navegador.')}render()}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+function empty(el,msg){$(el).innerHTML='<div class="empty">'+escapeHTML(msg)+'</div>'}
+function removeBtn(type,id){return '<button class="danger" data-delete="'+type+'" data-id="'+escapeHTML(id)+'" type="button">Eliminar</button>'}
+function switchTab(tab){document.querySelectorAll('.section').forEach(s=>s.classList.toggle('active',s.id===tab));document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));window.scrollTo({top:0,behavior:'smooth'});render()}
+window.switchTab=switchTab;
+function renderMoney(){const list=$('moneyList');const tx=[...data.transactions].sort((a,b)=>b.date.localeCompare(a.date));if(!tx.length){empty('moneyList','Todavía no hay movimientos. Añade tu primer ingreso o gasto.');return}list.innerHTML=tx.slice(0,30).map(x=>`<div class="item"><div class="item-main"><div class="item-title">${escapeHTML(x.desc)}</div><div class="item-meta">${escapeHTML(x.category)} · ${escapeHTML(x.date)}</div></div><div class="item-amount ${x.type==='ingreso'?'positive':'negative'}">${x.type==='ingreso'?'+':'−'}${money(x.amount)}</div>${removeBtn('transaction',x.id)}</div>`).join('')}
+function renderTasks(){const arr=[...data.tasks].sort((a,b)=>(a.done-b.done)||((a.date||'9999').localeCompare(b.date||'9999')));const html=arr.length?arr.map(x=>`<div class="item"><input type="checkbox" aria-label="Completar tarea" data-taskcheck="${x.id}" ${x.done?'checked':''} style="width:19px;height:19px;accent-color:var(--green)"><div class="item-main"><div class="item-title" style="${x.done?'text-decoration:line-through;color:var(--muted)':''}">${escapeHTML(x.title)}</div><div class="item-meta">${escapeHTML(x.subject)}${x.date?' · '+escapeHTML(x.date):''}</div></div>${removeBtn('task',x.id)}</div>`).join(''):'<div class="empty">No hay tareas. Añade una para empezar.</div>';$('taskList').innerHTML=html;$('homeTasks').innerHTML=arr.filter(x=>!x.done).slice(0,4).map(x=>`<div class="item"><div class="item-main"><div class="item-title">${escapeHTML(x.title)}</div><div class="item-meta">${escapeHTML(x.subject)}${x.date?' · '+escapeHTML(x.date):''}</div></div></div>`).join('')||'<div class="empty">Todo al día. No tienes tareas pendientes.</div>'}
+function renderCars(){const arr=[...data.cars].sort((a,b)=>b.date.localeCompare(a.date));$('carList').innerHTML=arr.length?arr.map(x=>`<div class="item"><div class="item-main"><div class="item-title">${escapeHTML(x.type)}${x.km?' · '+escapeHTML(x.km)+' km':''}</div><div class="item-meta">${escapeHTML(x.date)}${x.desc?' · '+escapeHTML(x.desc):''}</div></div><div class="item-amount negative">−${money(x.amount)}</div>${removeBtn('car',x.id)}</div>`).join(''):'<div class="empty">No hay gastos registrados para el coche.</div>'}
+function renderHabits(){const day=todayISO();const checks=data.habitChecks[day]||{};const list=data.habits.length?data.habits.map(h=>`<div class="item checkline"><input type="checkbox" data-habitcheck="${h.id}" ${checks[h.id]?'checked':''}><div class="item-main"><div class="item-title">${escapeHTML(h.title)}</div><div class="item-meta">${checks[h.id]?'Completado hoy':'Pendiente de hoy'}</div></div>${removeBtn('habit',h.id)}</div>`).join(''):'<div class="empty">Añade hábitos como entrenar, estudiar o beber agua.</div>';$('habitList').innerHTML=list;$('homeHabits').innerHTML=list}
+function renderAgenda(){const arr=[...data.agenda].sort((a,b)=>(a.date+(a.time||'')).localeCompare(b.date+(b.time||'')));$('agendaList').innerHTML=arr.length?arr.map(x=>`<div class="item"><div class="item-main"><div class="item-title">${escapeHTML(x.title)}</div><div class="item-meta">${escapeHTML(x.date)}${x.time?' · '+escapeHTML(x.time):''}</div></div>${removeBtn('agenda',x.id)}</div>`).join(''):'<div class="empty">No hay eventos. Planifica algo para tu día.</div>'}
+function renderStats(){const month=todayISO().slice(0,7);const tx=data.transactions.filter(x=>x.date.startsWith(month));const inc=tx.filter(x=>x.type==='ingreso').reduce((s,x)=>s+Number(x.amount),0);const exp=tx.filter(x=>x.type==='gasto').reduce((s,x)=>s+Number(x.amount),0);$('balance').textContent=money(inc-exp);$('spending').textContent=money(exp);$('pending').textContent=data.tasks.filter(x=>!x.done).length+data.agenda.filter(x=>x.date>=todayISO()).length;const checks=data.habitChecks[todayISO()]||{};const done=data.habits.filter(h=>checks[h.id]).length;$('habitsCount').textContent=done+'/'+data.habits.length;$('financeStats').innerHTML=`<div class="item"><div class="item-main">Ingresos del mes</div><div class="item-amount positive">${money(inc)}</div></div><div class="item"><div class="item-main">Gastos del mes</div><div class="item-amount negative">${money(exp)}</div></div><div class="item"><div class="item-main">Balance</div><div class="item-amount">${money(inc-exp)}</div></div><p class="small">Mes actual: ${escapeHTML(month)}</p>`;$('productivityStats').innerHTML=`<div class="item"><div class="item-main">Tareas completadas</div><div class="item-amount positive">${data.tasks.filter(x=>x.done).length}</div></div><div class="item"><div class="item-main">Tareas pendientes</div><div class="item-amount">${data.tasks.filter(x=>!x.done).length}</div></div><div class="item"><div class="item-main">Hábitos cumplidos hoy</div><div class="item-amount">${done}/${data.habits.length}</div></div><div class="progress"><span style="width:${data.habits.length?done/data.habits.length*100:0}%"></span></div>`}
+function render(){renderMoney();renderTasks();renderCars();renderHabits();renderAgenda();renderStats()}
+function formReset(form,dates){$(form).reset();dates.forEach(id=>$(id).value=todayISO())}
+$('today').textContent=new Date().toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+['mDate','cDate','tDate','aDate'].forEach(id=>$(id).value=todayISO());
+$('moneyForm').addEventListener('submit',e=>{e.preventDefault();const amount=Number($('mAmount').value);if(!(amount>0))return;data.transactions.push({id:uid(),type:$('mType').value,amount,category:$('mCategory').value,date:$('mDate').value,desc:$('mDesc').value.trim()});formReset('moneyForm',['mDate']);save()});
+$('taskForm').addEventListener('submit',e=>{e.preventDefault();const title=$('tTitle').value.trim();if(!title)return;data.tasks.push({id:uid(),title,subject:$('tSubject').value,date:$('tDate').value,done:false});formReset('taskForm',['tDate']);save()});
+$('carForm').addEventListener('submit',e=>{e.preventDefault();const amount=Number($('cAmount').value);if(!(amount>0))return;const type=$('cType').value;const date=$('cDate').value;const desc=$('cDesc').value.trim();data.cars.push({id:uid(),type,amount,km:$('cKm').value,date,desc});data.transactions.push({id:uid(),type:'gasto',amount,category:'Coche / '+type,date,desc:desc||type});formReset('carForm',['cDate']);save()});
+$('habitForm').addEventListener('submit',e=>{e.preventDefault();const title=$('hTitle').value.trim();if(!title)return;data.habits.push({id:uid(),title});$('hTitle').value='';save()});
+$('agendaForm').addEventListener('submit',e=>{e.preventDefault();const title=$('aTitle').value.trim();if(!title)return;data.agenda.push({id:uid(),title,date:$('aDate').value,time:$('aTime').value});formReset('agendaForm',['aDate']);save()});
+document.addEventListener('change',e=>{const t=e.target;if(t.dataset.taskcheck){const x=data.tasks.find(x=>x.id===t.dataset.taskcheck);if(x)x.done=t.checked;save()}if(t.dataset.habitcheck){const day=todayISO();data.habitChecks[day]=data.habitChecks[day]||{};data.habitChecks[day][t.dataset.habitcheck]=t.checked;save()}});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-delete]');if(!b)return;const type=b.dataset.delete,id=b.dataset.id;if(!confirm('¿Eliminar este registro?'))return;const keyMap={transaction:'transactions',task:'tasks',car:'cars',habit:'habits',agenda:'agenda'};data[keyMap[type]]=data[keyMap[type]].filter(x=>x.id!==id);if(type==='car'){/* El registro financiero correspondiente se mantiene como movimiento histórico. */}save()});
+window.exportData=function(){const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='mi-vida-copia-'+todayISO()+'.json';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url)};
+window.resetData=function(){if(!confirm('Esto eliminará todos tus movimientos, tareas, hábitos y eventos. ¿Continuar?'))return;data={transactions:[],tasks:[],cars:[],habits:[],agenda:[],habitChecks:{}};save()};
+load();render();
+})();
+</script>
+</body>
+</html>
